@@ -8,8 +8,8 @@ require 'pp'
 describe Rakuten::Client do
 
   before(:all) do
-    @developer_id = '45b4f149ff4bd93f284302da29e48b5c'
-    @affiliate_id = '0d388c70.61fad632.0d388c76.be4fa787'
+    @developer_id = '0c40edce3a5222e2961780df16d0c0f6'
+    @affiliate_id = '0d41c043.e0cdd459.0d41c044.5eaf1555'
     @client = Rakuten::Client.new(@developer_id, @affiliate_id)
   end
 
