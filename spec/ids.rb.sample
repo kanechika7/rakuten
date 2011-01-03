@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+# テストを実行するには、デベロッパーIDとアフィリエイトIDを書き換え、ids.rb という名前で保存してください.
+DEVELOPER_ID = 'Your developer id'
+AFFILIATE_ID = 'Your affiliate id'

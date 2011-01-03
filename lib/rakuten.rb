@@ -33,7 +33,7 @@ module Rakuten
     # リクエストURLを返す.
     def request_url(operation, version = nil, params = {})
       url = "#{host(operation)}?developerId=#{@developer_id}&operation=#{operation}&version=#{version}"
-      url += "&affiliateId=#{@affiliate_id}" if @affiliate_id
+      url += "&affiliateId=#{@affiliate_id}" if @affiliate_id && @affiliate_id != ''
       if params
         params.each do |k, v|
           url += "&#{k}=" + CGI::escape(v.to_s)
@@ -94,7 +94,7 @@ module Rakuten
               'http://dynamic.rakuten.co.jp/rcm/1.0/t/json'
             end
       url += "?developerId=#{@developer_id}"
-      url += "&affiliateId=#{@affiliate_id}" if @affiliate_id
+      url += "&affiliateId=#{@affiliate_id}" if @affiliate_id && @affiliate_id != ''
       if params
         params.each do |k, v|
           url += "&#{k}=" + CGI::escape(v.to_s)

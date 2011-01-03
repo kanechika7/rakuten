@@ -1,4 +1,5 @@
 pkg/*
 *.gem
 .bundle
+spec/ids.rb
 *~

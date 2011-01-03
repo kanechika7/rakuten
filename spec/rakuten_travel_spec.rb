@@ -2,14 +2,17 @@
 require 'rakuten'
 require 'date'
 require 'pp'
+require File.dirname(__FILE__) + '/ids.rb'
 
 # see http://webservice.rakuten.co.jp/document/index.html
 
+# テストを実行するには、ids.rb.sample のデベロッパーIDとアフィリエイトIDを書き換え、
+# ids.rb という名前で保存してください.
 describe Rakuten::TravelClient do
 
   before(:all) do
-    @developer_id = '0c40edce3a5222e2961780df16d0c0f6'
-    @affiliate_id = '0d41c043.e0cdd459.0d41c044.5eaf1555'
+    @developer_id = DEVELOPER_ID
+    @affiliate_id = AFFILIATE_ID
     @client = Rakuten::TravelClient.new(@developer_id, @affiliate_id)
   end
 
