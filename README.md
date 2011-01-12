@@ -1,131 +1,68 @@
-rakuten : Simple Rakuten API client for Ruby
-============================================
+# rakuten : Simple Rakuten API client for Ruby
 
 シンプルな楽天APIクライアント.
-Ruby 1.9.2 で動作確認.
+Ruby 1.8.7, 1.9.2 で動作確認.
 
-楽天市場系API呼び出しサンプル
--------
+## インストール
 
-楽天商品検索API
+    % gem install rakuten
 
-    client = Rakuten::Client.new('DEVELOPER_ID', 'AFFILIATE_ID(オプション)')
-    result = @client.item_search('2010-09-15', {:keyword => '福袋', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+## SYNOPSYS
 
-楽天ジャンル検索API
+[楽天WEB SERVICE](http://webservice.rakuten.co.jp/) の各種APIを簡単に使うための gem です.
+文字コードには UTF-8 を使用してください.
 
-    result = client.genre_search('2007-04-11', {:genreId => 0}) # ルートレベル
-    genre_level = result['child'][0]['genreLevel']
-    genre_name = result['child'][0]['genreName']
-    genre_id = result['child'][0]['genreId']
+## サンプル
 
-    result = client.genre_search('2007-04-11', {:genreId => 100227}) # 食品ジャンル
+### 楽天市場系API, 楽天ブックス系API, 楽天オークション系API
 
-楽天商品コード検索API
-
-    result = @client.item_code_search('2010-08-05', {:itemCode => item_code})
-    items = result['Items']['Item']
-
-楽天カタログ検索API
-
-    result = client.catalog_search('2009-04-15', {:keyword => '液晶テレビ', :sort => '-reviewCount'})
-    cnt = result['count']
-    catalogs = result['Catalogs']['Catalog']
-
-楽天商品ランキングAPI
-
-    result = client.item_ranking('2010-08-05')
-    title = result['title']
-    last_build_date = result['lastBuildDate']
-    items = result['Items']['Item']
-  
-楽天プロダクト製品検索API
-
-    result = client.product_search('2010-11-18', {:keyword => 'ノートパソコン', :genreId => 100040})
-    items = result['Items']['Item']
-
-楽天プロダクト製品詳細API
-
-    result = client.product_detail('2010-11-18', {:productId => product_id, :detailFlag => 1})
-    item = result['Item']
-
-楽天プロダクトジャンル情報API
-
-    result = client.product_genre_info('2010-11-18', {:genreId => 500740, :makerHits => 10, :satisfiedHits => 5, :satisfiedPage => 3})
-    satisfiers = result['SatisfiedInformation']['satisfier']
-    genre_information = result['GenreInformation']
-    maker_information = result['MakerInformation']['maker']
-
-楽天プロダクトメーカー情報API
-
-    result = client.product_maker_info('2010-11-18', {:makerCode => 104901780})
-    maker_name = result['makerName']
-
-楽天プロダクト価格比較情報API
-
-    result = client.product_price_info('2010-11-18', {:productId => product_id, :availability => 1, :creditCardFlag => 1})
-    cnt = result['count']
-    items = result['Items']['Item']
-
-
-楽天ブックス系API呼び出しサンプル
-------
-
-楽天ブックス総合検索API
+以下のようにして、楽天WEB SERVICE APIを呼び出すことができます.
 
     client = Rakuten::Client.new('DEVELOPER_ID', 'AFFILIATE_ID(オプション)')
-    result = client.books_total_search('2010-03-18', {:keyword => 'ガンダム', :NGKeyword => '予約', :sort => '+itemPrice'})
+    result = client.item_search('2010-09-15', {:keyword => '福袋', :sort => '+itemPrice'})
+
+Rakuten::Client オブジェクトに対して呼び出すメソッド名は、楽天APIの operation パラメーターの名前を小文字にしてアンダースコアでつないだ者です.
+例えば、楽天商品検索API(operation名は"ItemSearch")の呼び出しの場合、メソッド名は "item_search" になります.
+第一引数は、APIのバージョンです. APIのバージョンは、operation 毎に異なりますので注意してください.
+楽天WEB SERVICE API に送信するパラメーター(operationとversionを除く)は、ハッシュにした上で第二引数としてメソッドに渡してください.
+APIのバージョンやパラメーターについては、楽天WEB SERVICEの [ドキュメント](http://webservice.rakuten.co.jp/) を参照してください.
+
+結果は、レスポンスJSONからハッシュの形で取得します. 
+
     cnt = result['count']
     items = result['Items']['Item']
 
-楽天ブックス書籍検索API
+形式は呼び出したAPIによって様々です. 楽天WEB SERVICEの [ドキュメント](http://webservice.rakuten.co.jp/) の、各APIの解説にある出力パラメーターの欄を参照してください.
 
-    result = client.books_book_search('2010-03-18', {:title => '太陽', :booksGenreId => '001004008', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+エラーが発生した場合は、Rakuten::ApiError が発生します.
+Rakuten::ApiError から、エラーの種類とメッセージを取得することができます.
 
-楽天ブックスCD検索API
+その他のAPIの呼び出し例については、[spec](https://github.com/xanagi/rakuten/blob/master/spec/rakuten_spec.rb) を参照してください.
 
-    result = client.books_CD_search('2010-03-18', {:artistName => 'サザンオールスターズ', :sort => '+itemPrice'})
-    cnt = result['count'] > 0
-    items = result['Items']['Item']
+### 楽天トラベル系API
 
-楽天ブックスDVD検索API
+楽天トラベル系APIは、以下のように Rakuten::TravelClient を使って呼び出します.
 
-    result = @client.books_DVD_search('2010-03-18', {:title => 'ガンダム', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+    client = Rakuten::TravelClient.new('DEVELOPER_ID', 'AFFILIATE_ID(オプション)')
+    result = client.simple_hotel_search('2009-10-20', {:largeClassCode => 'japan', 
+                                                       :middleClassCode => 'akita', 
+                                                       :smallClassCode => 'tazawa'})
+使い方は、Rakuten::Client と同じです.
+その他のAPIの呼び出し例については、[spec](https://github.com/xanagi/rakuten/blob/master/spec/rakuten_travel_spec.rb) を参照してください.
 
-楽天ブックス洋書検索API
+### 楽天ダイナミックアドAPI, 楽天ダイナミックアドAPIトラベル
 
-    result = client.books_foreign_book_search('2010-03-18', {:title => 'HarryPotter', :booksGenreId => '005407', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+楽天ダイナミックアドAPI, 楽天ダイナミックアドAPIトラベルを呼び出す場合には、Rakuten::DynamicAdClient を使います.
 
-楽天ブックス雑誌検索API
+    # 楽天ダイナミックアドAPI
+    client = Rakuten::DynamicAdClient.new('DEVELOPER_ID', 'AFFILIATE_ID(オプション)')
+    result = client.dynamic_ad(nil, {:url => 'http://plaza.rakuten.co.jp/isblog/diary/200705230001/'})
 
-    result = client.books_magazine_search('2010-03-18', {:title => '週刊 経済', :booksGenreId => '007604001', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+    # 楽天ダイナミックアドAPIトラベル
+    client = Rakuten::DynamicAdClient.new('DEVELOPER_ID', 'AFFILIATE_ID(オプション)')
+    result = client.dynamic_ad_travel(nil, {:url => 'http://plaza.rakuten.co.jp/travelblog02/diary/200706140000/'})
 
-楽天ブックスゲーム検索API
 
-    result = client.books_game_search('2010-03-18', {:title => 'マリオ', :hardware => 'Wii', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
+## ライセンス
 
-楽天ブックスソフトウェア検索API
-
-    result = client.books_software_search('2010-03-18', {:title => '会計', :os => 'Mac', :sort => '+itemPrice'})
-    cnt = result['count']
-    items = result['Items']['Item']
-
-楽天ブックスジャンル検索API
-
-    result = client.books_genre_search('2009-03-26', {:booksGenreId => '000'})
-    genre_level = result['child'][0]['genreLevel']
-    genre_name = result['child'][0]['genreName']
-    genre_id = result['child'][0]['genreId']
-
+The MIT License
