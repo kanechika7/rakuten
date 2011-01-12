@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Tomonori Kusanagi"]
   s.email       = ["kusanagi@banana-systems.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/xanagi/rakuten"
   s.summary     = %q{Simple Rakuten API client.}
   s.description = %q{Simple Rakuten API client.}
 
