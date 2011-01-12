@@ -12,15 +12,15 @@ module Rakuten
   class Client
     attr_reader :raw_response
 
-    def initialize(developer_id, affiliate_id = nil)
-      @developer_id, @affiliate_id = developer_id, affiliate_id
+    def initialize(developer_id, affiliate_id = nil, http_opts = {})
+      @developer_id, @affiliate_id, @http_opts = developer_id, affiliate_id, http_opts
     end
 
     # リクエストを実行して結果を返す.
     # 結果はJSONをパーズしたHash.
     # リクエストに失敗したら例外をスローする.
     def request(operation, version = nil, params = {})
-      response = open(request_url(operation, version, params)) do |f|
+      response = open(request_url(operation, version, params), @http_opts) do |f|
         @raw_response = f.read
         JSON.parse(@raw_response)
       end
