@@ -114,5 +114,9 @@ module Rakuten
     def initialize(status, message)
       @status, @message = status, message
     end
+
+    def to_s
+      "#{self.status}:#{self.message}"
+    end
   end
 end
