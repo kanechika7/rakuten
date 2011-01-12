@@ -29,8 +29,8 @@ APIのバージョンやパラメーターについては、楽天WEB SERVICEの
 
 結果は、レスポンスJSONからハッシュの形で取得します. 
 
-    cnt = result['count']
-    items = result['Items']['Item']
+    cnt = result['count']           # アイテム件数
+    items = result['Items']['Item'] # アイテム配列
 
 形式は呼び出したAPIによって様々です. 楽天WEB SERVICEの [ドキュメント](http://webservice.rakuten.co.jp/) の、各APIの解説にある出力パラメーターの欄を参照してください.
 
