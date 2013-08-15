@@ -8,9 +8,6 @@ require 'active_support/inflector'
 require 'json'
 require 'i18n'
 
-require 'openssl'
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-
 module Rakuten
   class Client
     attr_reader :raw_response
