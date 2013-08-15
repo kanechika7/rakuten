@@ -24,10 +24,11 @@ module Rakuten
         @raw_response = f.read
         JSON.parse(@raw_response)
       end
-      unless response['Header']['Status'] == 'Success'
-        raise ApiError.new(response['Header']['Status'], response['Header']['StatusMsg']) 
-      end
-      extract_result(response, operation)
+      return response
+      #unless response['Header']['Status'] == 'Success'
+      #  raise ApiError.new(response['Header']['Status'], response['Header']['StatusMsg']) 
+      #end
+      #extract_result(response, operation)
     end
 
     # リクエストURLを返す.
