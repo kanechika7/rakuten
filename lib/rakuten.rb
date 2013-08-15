@@ -32,7 +32,8 @@ module Rakuten
 
     # リクエストURLを返す.
     def request_url(operation, version = nil, params = {})
-      url = "#{host(operation)}?developerId=#{@developer_id}&operation=#{operation}&version=#{version}"
+      #url = "#{host(operation)}?developerId=#{@developer_id}&operation=#{operation}&version=#{version}"
+      url = "#{host(operation)}?applicationId=#{@developer_id}"
       url += "&affiliateId=#{@affiliate_id}" if @affiliate_id && @affiliate_id != ''
       if params
         params.each do |k, v|
@@ -45,7 +46,8 @@ module Rakuten
 
     # リクエスト送信先ホストを返す.
     def host(operation)
-      'http://api.rakuten.co.jp/rws/3.0/json'
+      #'http://api.rakuten.co.jp/rws/3.0/json'
+      'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20130805'
     end
 
     # レスポンスから結果データを抽出する.
